@@ -51,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // finding the UI elements from xml
         etDescription = findViewById(R.id.etDescription);
         btnCaptureImage = findViewById(R.id.btnCaptureImage);
         ivPostImage = findViewById(R.id.ivPostImage);
@@ -58,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
         //queryPosts();
 
+        // "Take Picture" button action
         btnCaptureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,7 +82,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 if (photoFile == null || ivPostImage.getDrawable() == null) {
                     Toast.makeText(MainActivity.this, "There is no image.", Toast.LENGTH_SHORT).show();
-
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
                 savePost(description, currentUser, photoFile);
@@ -88,7 +90,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void launchCamera() {
+        // retrieves the activity of the Camera
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         photoFile = getPhotoFileUri(photoFileName);
         Uri fileProvider = FileProvider.getUriForFile(MainActivity.this,
                 "com.example.fileprovider", photoFile);
@@ -96,6 +100,14 @@ public class MainActivity extends AppCompatActivity {
         if (intent.resolveActivity(getPackageManager()) != null) {
             cameraActivityResultLauncher.launch(intent);
         }
+    }
+
+    private File getPhotoFileUri(String photoFileName) {
+        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
+            Log.d(TAG, "Failed to create directory!");
+        }
+        return new File(mediaStorageDir.getPath() + File.separator + photoFileName);
     }
 
     ActivityResultLauncher<Intent> cameraActivityResultLauncher = registerForActivityResult(
@@ -114,13 +126,6 @@ public class MainActivity extends AppCompatActivity {
                         }
                 }
             });
-    private File getPhotoFileUri(String photoFileName) {
-        File mediaStorageDir = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
-        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()) {
-            Log.d(TAG, "Failed to create directory!");
-        }
-        return new File(mediaStorageDir.getPath() + File.separator + photoFileName);
-    }
 
     private void savePost(String description, ParseUser currentUser, File photoFile) {
         Post post = new Post();
