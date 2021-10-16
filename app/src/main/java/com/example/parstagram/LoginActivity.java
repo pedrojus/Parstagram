@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        getSupportActionBar().hide();
 
         if (ParseUser.getCurrentUser() != null) {
             goMainActivity();
@@ -34,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
 
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
-        btnSignIn = findViewById(R.id.btnSignIn);
+        btnSignIn = findViewById(R.id.btnLogin);
         btnSignUp = findViewById(R.id.btnSignUp);
 
         btnSignIn.setOnClickListener(new View.OnClickListener() {
@@ -75,11 +76,11 @@ public class LoginActivity extends AppCompatActivity {
                     if (e != null) {
                         switch (e.getCode()) {
                             case ParseException.USERNAME_TAKEN:
-                                Toast.makeText(LoginActivity.this, "Username taken!",
+                                Toast.makeText(LoginActivity.this, "Username taken! Please login to your account or sign up with a different username.",
                                         Toast.LENGTH_SHORT).show();
                                 break;
                             case ParseException.USERNAME_MISSING:
-                                Toast.makeText(LoginActivity.this, "Username missing!",
+                                Toast.makeText(LoginActivity.this, "Username missing! Please enter a username.",
                                         Toast.LENGTH_SHORT).show();
                                 break;
                             default:
