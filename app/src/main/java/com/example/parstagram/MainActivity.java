@@ -17,10 +17,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
@@ -37,10 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "MainActivity";
     public static final int CAPTURE_IMAGE_REQUEST_CODE = 42;
+    private ProgressBar pb;
     private EditText etDescription;
-    private Button btnCaptureImage;
     private ImageView ivPostImage;
+    private Button btnCaptureImage;
     private Button btnSubmit;
+    private Button btnLogout;
     File photoFile;
 
     public String photoFileName = "photo.jpg";
@@ -50,12 +54,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getSupportActionBar().hide();
 
         // finding the UI elements from xml
         etDescription = findViewById(R.id.etDescription);
         btnCaptureImage = findViewById(R.id.btnCaptureImage);
         ivPostImage = findViewById(R.id.ivPostImage);
         btnSubmit = findViewById(R.id.btnSubmit);
+        btnLogout = findViewById(R.id.btnLogout);
+        pb = findViewById(R.id.pb);
 
         //queryPosts();
 
@@ -87,7 +94,42 @@ public class MainActivity extends AppCompatActivity {
                 savePost(description, currentUser, photoFile);
             }
         });
+
+        btnLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ParseUser.logOutInBackground();
+                ParseUser currentUser = ParseUser.getCurrentUser();
+                Intent intent = new Intent(view.getContext(), LoginActivity.class);
+                if (intent.resolveActivity(getPackageManager()) != null) {
+                    Toast.makeText(view.getContext(), "Logged out!", Toast.LENGTH_SHORT).show();
+                    loginActivityLauncher.launch(intent);
+                }
+            }
+        });
     }
+
+    // Inflate the menu; this adds items to the action bar if it is present.
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+
+
+    ActivityResultLauncher<Intent> loginActivityLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Toast.makeText(MainActivity.this, "Logged out!", Toast.LENGTH_SHORT).show();
+                    }
+                    Toast.makeText(MainActivity.this, "Unable to log out!", Toast.LENGTH_SHORT).show();
+
+                }
+            });
 
     private void launchCamera() {
         // retrieves the activity of the Camera
@@ -132,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
         post.setDescription(description);
         post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
+        pb.setVisibility(ProgressBar.VISIBLE);
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -139,6 +182,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.e(TAG, "Issue saving post " + e);
                     return;
                 }
+                pb.setVisibility(ProgressBar.INVISIBLE);
+                Toast.makeText(MainActivity.this, "Post successful!", Toast.LENGTH_SHORT).show();
                 Log.i(TAG, "Post was successful!");
                 etDescription.setText("");
                 ivPostImage.setImageResource(0);
