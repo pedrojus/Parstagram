@@ -8,11 +8,11 @@
     <application
         android:name=".ParseApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Parstagram">
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.fileprovider"
