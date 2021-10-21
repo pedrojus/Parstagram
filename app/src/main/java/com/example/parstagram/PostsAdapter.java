@@ -41,6 +41,15 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     @Override
     public int getItemCount() { return posts.size(); }
 
+    public void clear() {
+        posts.clear();
+        notifyDataSetChanged();
+    }
+
+    public void addAll(List<Post> postList) {
+        posts.addAll(postList);
+        notifyDataSetChanged();
+    }
     class ViewHolder extends RecyclerView.ViewHolder {
         private TextView tvUsername;
         private TextView tvDescription;
