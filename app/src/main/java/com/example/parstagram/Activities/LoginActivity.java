@@ -1,4 +1,4 @@
-package com.example.parstagram;
+package com.example.parstagram.Activities;
 
 
 import android.content.Intent;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.parstagram.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
