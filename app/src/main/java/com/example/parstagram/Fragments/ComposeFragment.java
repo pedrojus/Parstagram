@@ -160,7 +160,8 @@ public class ComposeFragment extends Fragment {
     private void savePost (String description, ParseUser currentUser, File photoFile){
         Post post = new Post();
         post.setDescription(description);
-        post.setImage(new ParseFile(photoFile));
+        if (photoFile != null)
+            post.setImage(new ParseFile(photoFile));
         post.setUser(currentUser);
         pb.setVisibility(ProgressBar.VISIBLE);
         post.saveInBackground(new SaveCallback() {
