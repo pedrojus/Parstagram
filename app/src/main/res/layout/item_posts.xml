@@ -33,36 +33,39 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1">
 
         <ImageButton
             android:id="@+id/ibHeart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:backgroundTint="#FFFDFD"
+            android:scaleType="fitCenter"
             app:srcCompat="@drawable/ufi_heart" />
 
         <ImageButton
             android:id="@+id/ibComment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="0dp"
             android:layout_toEndOf="@+id/ibHeart"
             android:backgroundTint="#FFFDFD"
+            android:scaleType="fitCenter"
             app:srcCompat="@drawable/ufi_comment" />
 
         <ImageButton
             android:id="@+id/ibDirect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
             android:layout_marginTop="0dp"
             android:layout_toEndOf="@+id/ibComment"
             android:backgroundTint="#FFFDFD"
+            android:scaleType="fitCenter"
             app:srcCompat="@drawable/ufi_new_direct" />
     </RelativeLayout>
 
